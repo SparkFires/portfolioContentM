@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Content Manager Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+    <style>
+        :root {
+            --bg: #0e0e12;
+            --card: #16161c;
+            --card-border: #2a2a35;
+            --accent: #e8c97a;
+            --accent2: #c77dba;
+            --text: #e4e4e8;
+            --text-muted: #8a8a95;
+            --radius: 18px;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior:smooth; }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            overflow-x: hidden;
+            min-height:100vh;
+        }
+
+        /* ─── NOISE OVERLAY ─── */
+        body::before {
+            content:'';
+            position:fixed; inset:0;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
+            pointer-events:none; z-index:999; opacity:.6;
+        }
+
+        /* ─── FLOATING BLOBS ─── */
+        .blob {
+            position:fixed; border-radius:50%; filter:blur(120px); opacity:.18; pointer-events:none; z-index:0;
+            animation: drift 12s ease-in-out infinite alternate;
+        }
+        .blob-1 { width:500px; height:500px; background:#e8c97a; top:-150px; left:-100px; }
+        .blob-2 { width:400px; height:400px; background:#c77dba; bottom:-100px; right:-80px; animation-delay:3s; }
+        .blob-3 { width:300px; height:300px; background:#5b8dee; top:50%; left:55%; animation-delay:6s; }
+        @keyframes drift { to { transform: translate(60px,80px) scale(1.15); } }
+
+        /* ─── LAYOUT ─── */
+        .wrap { position:relative; z-index:1; max-width:900px; margin:0 auto; padding:0 28px 80px; }
+
+        /* ─── HERO ─── */
+        .hero { text-align:center; padding: 100px 0 70px; }
+        .hero .tag {
+            display:inline-block;
+            font-size:11px; font-weight:600; letter-spacing:3px; text-transform:uppercase;
+            color:var(--accent); border:1px solid var(--accent);
+            padding:6px 18px; border-radius:30px; margin-bottom:28px;
+            animation: fadeUp .8s .1s both;
+        }
+        .hero h1 {
+            font-family:'Playfair Display', serif;
+            font-size: clamp(42px,7vw,72px);
+            font-weight:700; line-height:1.1;
+            background: linear-gradient(135deg, var(--text) 30%, var(--accent) 70%);
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+            background-clip:text;
+            animation: fadeUp .8s .25s both;
+        }
+        .hero h1 em { font-style:italic; }
+        .hero .sub {
+            margin-top:22px; font-size:16px; color:var(--text-muted); max-width:520px; margin-left:auto; margin-right:auto; line-height:1.7;
+            animation: fadeUp .8s .4s both;
+        }
+        .hero .cta-row { margin-top:36px; display:flex; justify-content:center; gap:14px; flex-wrap:wrap; animation: fadeUp .8s .55s both; }
+        .btn {
+            display:inline-block; padding:12px 30px; border-radius:40px; font-size:13px; font-weight:500; letter-spacing:.5px;
+            text-decoration:none; transition: all .3s;
+        }
+        .btn-primary { background:var(--accent); color:#0e0e12; }
+        .btn-primary:hover { box-shadow:0 0 28px rgba(232,201,122,.45); transform:translateY(-2px); }
+        .btn-outline { border:1px solid var(--card-border); color:var(--text-muted); }
+        .btn-outline:hover { border-color:var(--accent); color:var(--accent); }
+
+        /* ─── SECTION TITLES ─── */
+        .sec-title {
+            font-family:'Playfair Display', serif; font-size:30px; font-weight:700;
+            margin-bottom:8px;
+        }
+        .sec-sub { color:var(--text-muted); font-size:14px; margin-bottom:36px; }
+        .divider { width:44px; height:2px; background:var(--accent); border-radius:2px; margin-bottom:14px; }
+
+        /* ─── STATS ROW ─── */
+        .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:60px; }
+        .stat-card {
+            background:var(--card); border:1px solid var(--card-border); border-radius:var(--radius);
+            padding:30px 20px; text-align:center;
+            transition: transform .3s, box-shadow .3s;
+        }
+        .stat-card:hover { transform:translateY(-4px); box-shadow:0 12px 40px rgba(0,0,0,.3); }
+        .stat-card .num {
+            font-family:'Playfair Display', serif; font-size:38px; font-weight:700;
+            background:linear-gradient(135deg,var(--accent),var(--accent2));
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+        }
+        .stat-card .label { color:var(--text-muted); font-size:13px; margin-top:6px; }
+
+        /* ─── SKILLS ─── */
+        .skills-grid { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:60px; }
+        .skill-pill {
+            background:var(--card); border:1px solid var(--card-border); border-radius:30px;
+            padding:10px 22px; font-size:13px; color:var(--text);
+            transition: all .3s; cursor:default;
+        }
+        .skill-pill:hover { border-color:var(--accent); color:var(--accent); transform:scale(1.04); }
+
+        /* ─── PROJECTS ─── */
+        .project-card {
+            background:var(--card); border:1px solid var(--card-border); border-radius:var(--radius);
+            overflow:hidden; margin-bottom:20px;
+            transition: transform .3s, box-shadow .3s;
+        }
+        .project-card:hover { transform:translateY(-3px); box-shadow:0 16px 50px rgba(0,0,0,.35); }
+        .project-card .proj-header {
+            display:flex; align-items:center; gap:18px; padding:28px 30px 20px;
+        }
+        .proj-icon {
+            width:52px; height:52px; border-radius:14px;
+            display:flex; align-items:center; justify-content:center;
+            font-size:24px; flex-shrink:0;
+        }
+        .icon-1 { background:linear-gradient(135deg,#e8c97a,#c77dba); }
+        .icon-2 { background:linear-gradient(135deg,#5b8dee,#c77dba); }
+        .icon-3 { background:linear-gradient(135deg,#5b8dee,#e8c97a); }
+        .proj-header h3 { font-family:'Playfair Display',serif; font-size:20px; font-weight:700; }
+        .proj-header .proj-meta { color:var(--text-muted); font-size:13px; margin-top:3px; }
+        .proj-body { padding:0 30px 26px; }
+        .proj-body p { color:var(--text-muted); font-size:14px; line-height:1.7; margin-bottom:14px; }
+        .proj-tags { display:flex; flex-wrap:wrap; gap:8px; }
+        .proj-tag {
+            background:rgba(232,201,122,.08); color:var(--accent); font-size:11px;
+            padding:5px 14px; border-radius:20px; font-weight:500;
+        }
+        .proj-results {
+            margin-top:14px; padding:14px 18px; background:rgba(232,201,122,.06);
+            border-left:3px solid var(--accent); border-radius:0 10px 10px 0;
+        }
+        .proj-results span { color:var(--accent); font-size:13px; font-weight:500; }
+
+        /* ─── EXPERIENCE TIMELINE ─── */
+        .timeline { position:relative; padding-left:28px; margin-bottom:60px; }
+        .timeline::before {
+            content:''; position:absolute; left:7px; top:6px; bottom:6px;
+            width:2px; background:linear-gradient(to bottom, var(--accent), var(--accent2), transparent);
+            border-radius:2px;
+        }
+        .tl-item { position:relative; margin-bottom:28px; }
+        .tl-item::before {
+            content:''; position:absolute; left:-24px; top:8px;
+            width:12px; height:12px; border-radius:50%;
+            background:var(--accent); border:3px solid var(--bg);
+            box-shadow:0 0 10px rgba(232,201,122,.4);
+        }
+        .tl-item .tl-date { font-size:12px; color:var(--accent); font-weight:500; margin-bottom:4px; }
+        .tl-item h4 { font-size:16px; font-weight:600; margin-bottom:2px; }
+        .tl-item .tl-company { color:var(--text-muted); font-size:13px; margin-bottom:6px; }
+        .tl-item p { color:var(--text-muted); font-size:13px; line-height:1.6; }
+
+        /* ─── TESTIMONIAL ─── */
+        .testimonial-card {
+            background:var(--card); border:1px solid var(--card-border); border-radius:var(--radius);
+            padding:36px 32px; margin-bottom:60px; position:relative; overflow:hidden;
+        }
+        .testimonial-card::before {
+            content:'\201C'; font-family:'Playfair Display',serif;
+            font-size:140px; line-height:.8; color:var(--accent); opacity:.12;
+            position:absolute; top:-10px; left:14px; pointer-events:none;
+        }
+        .testimonial-card p {
+            font-style:italic; font-size:16px; line-height:1.8; color:var(--text); position:relative; z-index:1;
+        }
+        .testimonial-card .author { margin-top:20px; display:flex; align-items:center; gap:14px; position:relative; z-index:1; }
+        .author-avatar {
+            width:42px; height:42px; border-radius:50%;
+            background:linear-gradient(135deg,var(--accent),var(--accent2));
+            display:flex; align-items:center; justify-content:center; font-weight:700; color:#0e0e12; font-size:16px;
+        }
+        .author-info .name { font-weight:600; font-size:14px; }
+        .author-info .role { color:var(--text-muted); font-size:12px; }
+
+        /* ─── CONTACT ─── */
+        .contact-card {
+            background:var(--card); border:1px solid var(--card-border); border-radius:var(--radius);
+            padding:48px 36px; text-align:center;
+            background-image: linear-gradient(135deg, rgba(232,201,122,.04), rgba(199,125,186,.04));
+        }
+        .contact-card h2 { font-family:'Playfair Display',serif; font-size:30px; font-weight:700; margin-bottom:10px; }
+        .contact-card p { color:var(--text-muted); font-size:14px; margin-bottom:28px; }
+        .contact-links { display:flex; justify-content:center; flex-wrap:wrap; gap:12px; }
+
+        /* ─── ANIMATIONS ─── */
+        @keyframes fadeUp {
+            from { opacity:0; transform:translateY(24px); }
+            to   { opacity:1; transform:translateY(0); }
+        }
+        .reveal {
+            opacity:0; transform:translateY(30px);
+            transition: opacity .7s cubic-bezier(.22,1,.36,1), transform .7s cubic-bezier(.22,1,.36,1);
+        }
+        .reveal.visible { opacity:1; transform:translateY(0); }
+
+        /* ─── RESPONSIVE ─── */
+        @media(max-width:600px){
+            .stats { grid-template-columns:1fr 1fr; }
+            .hero h1 { font-size:38px; }
+            .proj-header { flex-direction:column; align-items:flex-start; }
+            .contact-card { padding:32px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Blobs bg -->
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+<div class="blob blob-3"></div>
+
+<div class="wrap">
+
+    <!-- ─── HERO ─── -->
+    <header class="hero">
+        <div class="tag">Портфолио</div>
+        <h1>Создаю контент,<br><em>который работает</em></h1>
+        <p class="sub">Content Manager · SMM · Копирайтинг · Контент-стратегия. Помогаю брендам находить свой голос и аудиторию.</p>
+        <div class="cta-row">
+            <a href="@DenisMastermind" class="btn btn-primary">Связаться со мной</a>
+            <a href="https://hh.ru/resume/f26eec28ff09d0e0210039ed1f447a664b614a?hhtmFrom=resume_list" class="btn btn-outline">Скачать резюме</a>
+        </div>
+    </header>
+
+    <!-- ─── STATS ─── -->
+    <section class="reveal">
+        <div class="stats">
+            <div class="stat-card">
+                <div class="num">15+</div>
+                <div class="label">Успешных проектов</div>
+            </div>
+            <div class="stat-card">
+                <div class="num">3×</div>
+                <div class="label">Рост вовлечённости</div>
+            </div>
+            <div class="stat-card">
+                <div class="num">200к</div>
+                <div class="label">Суммарная аудитория</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── SKILLS ─── -->
+    <section class="reveal">
+        <div class="divider"></div>
+        <h2 class="sec-title">Навыки</h2>
+        <p class="sec-sub">Инструменты и навыки</p>
+        <div class="skills-grid">
+            <div class="skill-pill">📝 Копирайтинг</div>
+            <div class="skill-pill">📊 Контент-стратегия</div>
+            <div class="skill-pill">📱 SMM</div>
+            <div class="skill-pill">🎨 Визуальный контент</div>
+            <div class="skill-pill">📈 Аналитика</div>
+            <div class="skill-pill">✏ Редактирование</div>
+            <div class="skill-pill">🎬 Видео-контент</div>
+            <div class="skill-pill">📧 Email-маркетинг</div>
+            <div class="skill-pill">📅 Контент-план</div>
+            <div class="skill-pill">🤝 Ведение блога</div>
+            <div class="skill-pill">🛠 Canva / Figma</div>
+        </div>
+    </section>
+
+    <!-- ─── PROJECTS ─── -->
+    <section class="reveal" style="margin-top:50px;">
+        <div class="divider"></div>
+        <h2 class="sec-title">Проекты</h2>
+        <p class="sec-sub">Избранные работы из портфеля</p>
+
+        <div class="project-card">
+            <div class="proj-header">
+                <div class="proj-icon icon-1">📱</div>
+                <div>
+                    <h3>SMM для Siberian Wellness</h3>
+                    <div class="proj-meta">2025 · Instagram, Telegram</div>
+                </div>
+            </div>
+            <div class="proj-body">
+                <p>Разработали контент-стратегию для нового бренда. Формировали визуальную идентичность, писали текста, вели рубрики и организовывали giveaway-кампании.</p>
+                <div class="proj-results">
+                    <span>📈 Результат:</span> <span style="color:var(--text-muted)"> рост подписчиков на 180% за 3 месяца, вовлечённость выросла в 3 раза.</span>
+                </div>
+                <div class="proj-tags" style="margin-top:14px;">
+                    <span class="proj-tag">Instagram</span>
+                    <span class="proj-tag">Telegram</span>
+                    <span class="proj-tag">Контент-план</span>
+                    <span class="proj-tag">Копирайтинг</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="project-card">
+            <div class="proj-header">
+                <div class="proj-icon icon-2">✍️</div>
+                <div>
+                    <h3>Сценарии и реклама для DK FILMS</h3>
+                    <div class="proj-meta">2024–2026 · Corporate blog</div>
+                </div>
+            </div>
+            <div class="proj-body">
+                <p>Вёл корпоративный блог: от исследования тематик и написания статей до публикации и продвижения. Внедрили систему контент-календаря.</p>
+                <div class="proj-results">
+                    <span>📈 Результат:</span> <span style="color:var(--text-muted)"> органический трафик вырос на 250%, время на сайте увеличилось в 2× раза.</span>
+                </div>
+                <div class="proj-tags" style="margin-top:14px;">
+                    <span class="proj-tag">Blog</span>
+                    <span class="proj-tag">Редактирование</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="project-card">
+            <div class="proj-header">
+                <div class="proj-icon icon-3">🎬</div>
+                <div>
+                    <h3>YouTube-канал Pancake Production</h3>
+                    <div class="proj-meta">2024 · Video Content</div>
+                </div>
+            </div>
+            <div class="proj-body">
+                <p>Создавал сценарии и контент-план для YouTube-канала. Делал описания и оптимизировал видео для поиска.</p>
+                <div class="proj-results">
+                    <span>📈 Результат:</span> <span style="color:var(--text-muted)"> набрали 50K просмотров за первые 2 месяца.</span>
+                </div>
+                <div class="proj-tags" style="margin-top:14px;">
+                    <span class="proj-tag">YouTube</span>
+                    <span class="proj-tag">Сценарии</span>
+                    <span class="proj-tag">Video SEO</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── EXPERIENCE ─── -->
+    <section class="reveal" style="margin-top:50px;">
+        <div class="divider"></div>
+        <h2 class="sec-title">Опыт работы</h2>
+        <p class="sec-sub">Карьерный путь</p>
+        <div class="timeline">
+            <div class="tl-item">
+                <div class="tl-date">2024 – настоящее время</div>
+                <h4> Screenwriter/Content Manager/Journalist</h4>
+                <div class="tl-company">[DK FILMS] · США</div>
+                <p>Написание текстов разных форматов и жанров: аналитика, реклама, интервью, короткие форматы. Формирование контент-стратегии бренда и координация команды.</p>
+            </div>
+            <div class="tl-item">
+                <div class="tl-date">2023 – 2024</div>
+                <h4>SMM Specialist</h4>
+                <div class="tl-company">[SELFMEDIA] · Санкт-Петербург</div>
+                <p>Подготовка и редактура текстов для социальных сетей компании (Instagram, Telegram). Работа с готовым видео (аналитика и улучшение показателей вовлеченности).</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── TESTIMONIAL ─── -->
+    <section class="reveal">
+        <div class="testimonial-card">
+            <p>«Блестяще справился с контентом для нашего бренда. Контент-стратегия была продуманной и эффективной — результаты превзошли все ожидания. Определённо рекомендую!»</p>
+            <div class="author">
+                <div class="author-avatar">А</div>
+                <div class="author-info">
+                    <div class="name">[Климова Дарья]</div>
+                    <div class="role">[Маркетолог], [Дари Еду]</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ─── CONTACT ─── -->
+    <section class="reveal">
+        <div class="contact-card">
+            <h2>Давайте работать вместе</h2>
+            <p>Готов к новым проектам и сотрудничеству. Свяжитесь со мной!</p>
+            <div class="contact-links">
+                <a href="denis.arshinsky@mail.ru" class="btn btn-primary">📧 Email</a>
+                <a href="@DenisMastermind" class="btn btn-outline">📱 Telegram</a>
+                <a href="https://hh.ru/resume/f26eec28ff09d0e0210039ed1f447a664b614a?hhtmFrom=resume_list" class="btn btn-outline">🔗 HeadHunter</a>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<!-- ─── SCROLL REVEAL JS ─── -->
+<script>
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((e, i) => {
+            if (e.isIntersecting) {
+                setTimeout(() => e.target.classList.add('visible'), i * 120);
+                observer.unobserve(e.target);
+            }
+        });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
