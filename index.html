@@ -215,6 +215,37 @@
             .proj-header { flex-direction:column; align-items:flex-start; }
             .contact-card { padding:32px 20px; }
         }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 20px;
+            background: rgba(232,201,122,.08);
+            border-radius: 12px;
+            transition: all .3s;
+        }
+        .contact-item:hover {
+            background: rgba(232,201,122,.14);
+            transform: translateX(4px);
+        }
+        .contact-icon {
+            width: 28px;
+            height: 28px;
+            object-fit: contain;
+        }
+        .contact-item span {
+            font-size: 14px;
+            color: var(--text);
+            font-weight: 400;
+        }
     </style>
 </head>
 <body>
@@ -233,7 +264,6 @@
         <p class="sub">Content Manager · SMM · Копирайтинг · Контент-стратегия. Помогаю брендам находить свой голос и аудиторию.</p>
         <div class="cta-row">
             <a href="https://t.me/DenisMastermind" class="btn btn-primary">Связаться со мной</a>
-            <a href="https://hh.ru/resume/f26eec28ff09d0e0210039ed1f447a664b614a?hhtmFrom=resume_list" class="btn btn-outline">Скачать резюме</a>
         </div>
     </header>
 
@@ -281,6 +311,28 @@
         <h2 class="sec-title">Проекты</h2>
         <p class="sec-sub">Избранные работы из портфеля</p>
 
+
+        <div class="project-card">
+            <div class="proj-header">
+                <div class="proj-icon icon-2">✍️</div>
+                <div>
+                    <h3>Сценарии и реклама для DK FILMS</h3>
+                    <div class="proj-meta">2024–2026 · Corporate blog</div>
+                </div>
+            </div>
+            <div class="proj-body">
+                <p> Исследования тематик и написания статей до публикации и продвижения.</p>
+                <div class="proj-results">
+                    <span>📈 Результат:</span> <span style="color:var(--text-muted)"> органический трафик вырос на 250%, время на сайте увеличилось в 2× раза.</span>
+                </div>
+                <div class="proj-tags" style="margin-top:14px;">
+                    <span class="proj-tag">Blog</span>
+                    <span class="proj-tag">Редактирование</span>
+                    <span class="proj-tag">Копирайт</span>
+                </div>
+            </div>
+        </div>
+
         <div class="project-card">
             <div class="proj-header">
                 <div class="proj-icon icon-1">📱</div>
@@ -290,7 +342,7 @@
                 </div>
             </div>
             <div class="proj-body">
-                <p>Разработали контент-стратегию для нового бренда. Формировали визуальную идентичность, писали текста, вели рубрики и организовывали giveaway-кампании.</p>
+                <p>Разработака контент-стратегии для нового бренда. Формирование визуальной идентичности, написание текста, ведение рубрики и организация giveaway-кампании.</p>
                 <div class="proj-results">
                     <span>📈 Результат:</span> <span style="color:var(--text-muted)"> рост подписчиков на 180% за 3 месяца, вовлечённость выросла в 3 раза.</span>
                 </div>
@@ -305,26 +357,6 @@
 
         <div class="project-card">
             <div class="proj-header">
-                <div class="proj-icon icon-2">✍️</div>
-                <div>
-                    <h3>Сценарии и реклама для DK FILMS</h3>
-                    <div class="proj-meta">2024–2026 · Corporate blog</div>
-                </div>
-            </div>
-            <div class="proj-body">
-                <p>Вёл корпоративный блог: от исследования тематик и написания статей до публикации и продвижения. Внедрили систему контент-календаря.</p>
-                <div class="proj-results">
-                    <span>📈 Результат:</span> <span style="color:var(--text-muted)"> органический трафик вырос на 250%, время на сайте увеличилось в 2× раза.</span>
-                </div>
-                <div class="proj-tags" style="margin-top:14px;">
-                    <span class="proj-tag">Blog</span>
-                    <span class="proj-tag">Редактирование</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="project-card">
-            <div class="proj-header">
                 <div class="proj-icon icon-3">🎬</div>
                 <div>
                     <h3>YouTube-канал Pancake Production</h3>
@@ -332,7 +364,7 @@
                 </div>
             </div>
             <div class="proj-body">
-                <p>Создавал сценарии и контент-план для YouTube-канала. Делал описания и оптимизировал видео для поиска.</p>
+                <p>Создание сценариев и контент-плана для YouTube-канала. Описание и оптимизация видео для поиска.</p>
                 <div class="proj-results">
                     <span>📈 Результат:</span> <span style="color:var(--text-muted)"> набрали 50K просмотров за первые 2 месяца.</span>
                 </div>
@@ -353,14 +385,14 @@
         <div class="timeline">
             <div class="tl-item">
                 <div class="tl-date">2024 – настоящее время</div>
-                <h4> Screenwriter/Content Manager/Journalist</h4>
+                <h4> Content Manager/Journalist</h4>
                 <div class="tl-company">[DK FILMS] · США</div>
                 <p>Написание текстов разных форматов и жанров: аналитика, реклама, интервью, короткие форматы. Формирование контент-стратегии бренда и координация команды.</p>
             </div>
             <div class="tl-item">
                 <div class="tl-date">2023 – 2024</div>
                 <h4>SMM Specialist</h4>
-                <div class="tl-company">[SELFMEDIA] · Санкт-Петербург</div>
+                <div class="tl-company">[SELFMEDIA] · Москва</div>
                 <p>Подготовка и редактура текстов для социальных сетей компании (Instagram, Telegram). Работа с готовым видео (аналитика и улучшение показателей вовлеченности).</p>
             </div>
         </div>
@@ -371,7 +403,7 @@
         <div class="testimonial-card">
             <p>«Блестяще справился с контентом для нашего бренда. Контент-стратегия была продуманной и эффективной — результаты превзошли все ожидания. Определённо рекомендую!»</p>
             <div class="author">
-                <div class="author-avatar">А</div>
+                <div class="author-avatar">КД</div>
                 <div class="author-info">
                     <div class="name">[Климова Дарья]</div>
                     <div class="role">[Маркетолог], [Дари Еду]</div>
@@ -385,10 +417,19 @@
         <div class="contact-card">
             <h2>Давайте работать вместе</h2>
             <p>Готов к новым проектам и сотрудничеству. Свяжитесь со мной!</p>
-            <div class="contact-links">
-               <a href="https://mail.ru/denis.arshinsky@mail.ru" class="btn btn-primary">📧 Email</a>
-                <a href="https://t.me/DenisMastermind" class="btn btn-outline">📱 Telegram</a>
-                <a href="https://hh.ru/resume/f26eec28ff09d0e0210039ed1f447a664b614a?hhtmFrom=resume_list" class="btn btn-outline">🔗 HeadHunter</a>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <img src="https://img.icons8.com/fluency/48/new-post.png" alt="Email" class="contact-icon">
+                        <span>denis.arshinsky@mail.ru</span>
+                    </div>
+                    <div class="contact-item">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/120px-Telegram_logo.svg.png" alt="Telegram" class="contact-icon">
+                        <span>@DenisMastermind</span>
+                    </div>
+                    <div class="contact-item">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/HeadHunter_logo.png/120px-HeadHunter_logo.png" alt="HeadHunter" class="contact-icon">
+                        <span>Denis Arshinsky</span>
+                    </div>
             </div>
         </div>
     </section>
@@ -409,7 +450,3 @@
 </script>
 </body>
 </html>
-
-
-
-
